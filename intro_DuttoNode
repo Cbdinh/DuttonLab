@@ -1,0 +1,63 @@
+Welcome to the Dutton lab!
+
+We have a few things to help you get started on the TSCC.
+
+Step (1): Admin
+Let Cong or Steven know that you want an account with TSCC if you do not already have one.
+
+Then send them your public key:
+
+#MAC users: In Applications/Utilities launch Terminal
+#Linux users: In Applications/System Tools, launch Terminal
+  If you do not yet have a public key, generate one with the following command in the terminal: 
+  
+  ssh-keygen -t rsa
+  
+  There will be a prompt to create a password (the cursor will not move) and to confirm it. This will be your password to log into TSCC. Be sure not to use a star (*) in the password. Then there will be a prompt to choose a location to save the new key; the default (/Users/yourUsername/.ssh/id_rsa) is good.
+  Once generated or if you already have a public key, copy and paste the public key, which can be printed with this command:
+  
+  cat ~/.ssh/id_rsa.pub
+  
+  "ssh-rsa" with a long string of characters (the public key) will be printed into the terminal. Copy and paste this into an email to Cong or Steven, and they'll respond saying that they received it.
+  
+#Windows: If you use windowsOS, you will beed to download Putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to connect to TSCC. After installation, start the program "PuTTYgen," which is found within the PuTTY folder in "All Programs" if installed in the default location.
+  Under the Actions menu bar, click on Generate a public/private key pair/Generate. Once the randomness is generated, copy and paste the contents of "Public key for pasting into OpenSSH authorized_keys file" into an email to Cong/Steven.
+  Create a password for this key-pair in "Key passphrase" and confirm it. This will be the password to log into TSCC. 
+  Save both the generated key/public key in an easy to remember folder (Username/Documents) with the names "private.pkk" and "public.pkk," respectively. Put them into the same folder.
+  Exit PyTTYgen
+  
+  After the account with TSCC is made, open PuTTY. In "HostName," enter <your username>@tscc.login.sdsc.edu
+  The username is likely your email address/UCSD Active Directory username
+  In "Saved Sessions," enter tscc
+  Save
+  Then connect to TSCC! in left hand panel, click Connection - SSH - Auth
+  for "Private key file for authentication," browse for where you saved the private key file above and select Open. 
+  Then click "Open" again and click "yes" for the security alert, then enter the password that you set above. In PuTTY, the cursor will not move while you are entering your password.
+  You should now see the welcome screen to TSCC!
+  
+  Once done, you can exit with the command: exit
+  Practice logging in and out a few times and get started doing research/analyzing your data!
+  
+  
+  Step two: Setting up file transfers
+  So since TSCC is all the way over in Revelle, you probably don't want to run back and forth with a thumb drive whenever you want to upload or download a file (not that they would let you in to do that anyway).
+  
+ #Mac/Linux users: can use filezilla
+ 
+ #Windows users: can use filezilla or WinSCP (after setting up TSCC with PuTTY)
+ Consider filezilla: Download (filezilla-project.org) and install.
+  Under the menu bar "Edit," go to Settings and the SFTP section. Add private key, and borws for where you hsaved the private key file above.
+  Under the menu bar "File," go to Site Manager and add "New Site" and name it tscc
+  "Host:" tscc-login#.sdsc.edu | Note: The # will be replaced by which node you have logged into TSCC with (either 1 or 2). You can check this by looking at the terminal after logging in; the number is part of the prompt at the beginning of each line that you can type in.
+  "Port:" 22
+  "Protocol:" SFTP
+  "Logon Type:" Interactive
+  "User:" Your username/UCSD Active Directory
+  Background color of your choice
+  Consider using Win-SCP (https://winscp.net/eng/download.php) and install as normal. You will be asked if you want to load previously set up host keys from PuTTY. You do for TSCC. 
+  In the login screen, select tscc from host menu and click login. Enter your password that you set above and continue.
+  You should now be connected to your home directory on TSCC and the files are listed on the right. Download and upload using this.
+  
+  
+  
+  
