@@ -5,27 +5,10 @@ We have a few things to help you get started on the TSCC.
 Step (1): Admin
 Let Cong or Steven know that you want an account with TSCC if you do not already have one.
 
-Then send them your public key:
-
 #MAC users: In Applications/Utilities launch Terminal
 #Linux users: In Applications/System Tools, launch Terminal
-  If you do not yet have a public key, generate one with the following command in the terminal: 
-  
-  ssh-keygen -t rsa
-  
-  There will be a prompt to create a password (the cursor will not move) and to confirm it. This will be your password to log into TSCC. Be sure not to use a star (*) in the password. Then there will be a prompt to choose a location to save the new key; the default (/Users/yourUsername/.ssh/id_rsa) is good.
-  Once generated or if you already have a public key, copy and paste the public key, which can be printed with this command:
-  
-  cat ~/.ssh/id_rsa.pub
-  
-  "ssh-rsa" with a long string of characters (the public key) will be printed into the terminal. Copy and paste this into an email to Cong or Steven, and they'll respond saying that they received it.
-  
+
 #Windows: If you use windowsOS, you will beed to download Putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to connect to TSCC. After installation, start the program "PuTTYgen," which is found within the PuTTY folder in "All Programs" if installed in the default location.
-  Under the Actions menu bar, click on Generate a public/private key pair/Generate. Once the randomness is generated, copy and paste the contents of "Public key for pasting into OpenSSH authorized_keys file" into an email to Cong/Steven.
-  Create a password for this key-pair in "Key passphrase" and confirm it. This will be the password to log into TSCC. 
-  Save both the generated key/public key in an easy to remember folder (Username/Documents) with the names "private.pkk" and "public.pkk," respectively. Put them into the same folder.
-  Exit PyTTYgen
-  
   After the account with TSCC is made, open PuTTY. In "HostName," enter <your username>@tscc.login.sdsc.edu
   The username is likely your email address/UCSD Active Directory username
   In "Saved Sessions," enter tscc
@@ -42,7 +25,7 @@ Then send them your public key:
   Step two: Setting up file transfers
   So since TSCC is all the way over in Revelle, you probably don't want to run back and forth with a thumb drive whenever you want to upload or download a file (not that they would let you in to do that anyway).
   
- #Mac/Linux users: can use filezilla
+ #Mac/Linux users: can use filezilla. Download and add <yourUsername>@tscc-login1.sdsc.edu with your password
  
  #Windows users: can use filezilla or WinSCP (after setting up TSCC with PuTTY)
  Consider filezilla: Download (filezilla-project.org) and install.
@@ -59,5 +42,87 @@ Then send them your public key:
   You should now be connected to your home directory on TSCC and the files are listed on the right. Download and upload using this.
   
   
+Now you're in and can do some i/o with TSCC. But what about bigger jobs?
+  There are two options, submitted jobs and interactive jobs.
+  The daemon (the program, called TORQUE, that schedules jobs on the supercomputer) accepts jobs in the following formats:
+  submitted jobs need to have a shebang (#!) at the top of the .qsub file to accept 
+  Then there need to be flags (these start with a hyphen) to tell the daemon how to prioritize your job and how much compute power to reserve.
+  More details at http://www.sdsc.edu/support/user_guides/tscc-quick-start.html
   
-  
+You can copy the following into a new file "template.qsub"
+------
+
+#!/bin/bash
+#
+#PBS -q {condo, home, glean, gpu-condo, hotel, gpu-hotel, padfm}
+#PBS -N <nameOfJob>
+#PBS -l nodes=#:ppn=<# up to 16>
+#PBS -l walltime=HH:MM:SS
+#PBS -M <yourUsername>@ucsd.edu
+#PBS -m abe
+#PBS -A dutton-group
+#PBS -o outfile.out
+#PBS -e errorfile.err
+#PBS -V
+
+<Your commands go here>
+-----
+Now, what do all of these things mean?
+-q : queue; this is where you would get in line. Most of the time, you can use home, condo, or hotel. Home is for the nodes that we purchased to use, so we have the highest priority on it, has no limit on walltime and number of cores (we have 28). Condo/Hotel allows you to use more compute power than what we purchased in our node for a single job; however, we have the same priority as anyone else who also purchased a node. Condo is exclusive to people who purchased a node, but has a run time limit of eight hours and a max core limit of 512. Hotel can have a max walltime of 168 hours. Finally, you can use glean, which is free and uses any processors that may be available (up to 1024). I'd only advise using glean for relatively short and unimportant jobs since you can be kicked off of that node at any time if someone with higher priority requests compute power.
+
+-N : name of the job; Relatively little importance, but will be what shows up in the queue. It's public.
+
+-l : specify the number of processors and the wall time. ppn : processors per node. Walltime is how much time you reserve on the supercomputer. If your commands are not completed before the requested walltime is up, then it will be TERMINATED early. We are only charged for the walltime used, not the walltime requested. The more walltime you request, the lonoger it takes for your job to start, since it will take longer for the amount of time requested to be open. Default walltime is 1 hour.
+
+-M : mail: your e-mail address if you want to have e-mail updates. Optional
+
+-m : mail specification: what kind of emails do you want? (a)bort, (b)egin, (e)nd
+
+-A : account; In the likely event that your name is only associated with one account (ours), this spot is optional. Everyone has a default account.
+    How much time do we have left? "gbalance -p dutton-group"
+
+-o : output; Where to redirect the standard output (what would normally be printed onto the screen's terminal).
+
+-e : error; where to direct the standard error (also what would be printed onto the screen's terminal, but in an error situation)
+
+-V : variables; this exports all user environmental variables to the job, meaning that it can look into your directory for the programs and scripts that you installed outside of this script.
+
+
+-----
+How do you check in on these queued jobs? These commands!
+qstat | grep <yourUsername> : look at yours 
+qdel <jobPID> : delete/cancel the queued job. You can find the pid with the qstat command above.
+
+showq : shows what is running, queued, and blocked
+showbf : shows available time slots
+yqd : shows how many nodes are available on each scheduler
+lsjobs : shows what jobs are working on each node.
+showstart <jobPID> : will show estimated start time of your job in queue.
+
+More advanced guidelines:
+1) Try to not write the job outputs to your home directory (/home/<yourUsername>) due to how the server handles metadata. 
+2) Try to only open 10-200ish files in any job simultaneously
+3) Try to use your scratch folder if the job has a lot of writing tasks. However, the local scratch folder is purged at the end of the job or after 90 days, so you need to copy the desired files after the job completes to longer storage.
+
+
+
+
+
+#Interactive Jobs
+Much of the time, you want to try out lots of different options using an interactive job, which lets you get off of the login node to do more intense computes without slowing everyone else down on the login node.
+
+qsub -I -l nodes=#:ppn=# -l walltime=HH:MM:SS
+
+-I : interactive
+-l : options as above.
+
+I strongly advise using these interactive jobs with "screens," see this link.
+
+
+You can check on how much storage you're using with: lfs quota -u <yourUsername> /oasis/tscc/scratch
+
+There are many software and compilers that are already maintained on TSCC and can be accessed without installing. The list can be found here: http://www.sdsc.edu/support/user_guides/tscc-quick-start.html Software was last updated Winter 2018.
+
+
+
+
