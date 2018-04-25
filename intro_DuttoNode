@@ -2,24 +2,26 @@ Welcome to the Dutton lab!
 
 We have a few things to help you get started on the TSCC.
 
-Step (1): Admin
-Let Cong or Steven know that you want an account with TSCC if you do not already have one.
+Step 1: Admin
+After checking in with the Prof, let Cong or Steven know that you want an account with TSCC or to be added to the dutton account. This step may take several days.
 
-#MAC users: In Applications/Utilities launch Terminal
-#Linux users: In Applications/System Tools, launch Terminal
-
+Step 2: logging in
+#MAC users: In Applications/Utilities launch Terminal. "ssh <yourUsername>@tscc-login.sdsc.edu"
+#Linux users: In Applications/System Tools, launch Terminal. "ssh <yourUsername>@tscc-login.sdsc.edu"
 #Windows: If you use windowsOS, you will beed to download Putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to connect to TSCC. After installation, start the program "PuTTYgen," which is found within the PuTTY folder in "All Programs" if installed in the default location.
-  After the account with TSCC is made, open PuTTY. In "HostName," enter <your username>@tscc.login.sdsc.edu
-  The username is likely your email address/UCSD Active Directory username
+  Open PuTTY. In "HostName," enter <your username>@tscc.login.sdsc.edu
   In "Saved Sessions," enter tscc
   Save
   Then connect to TSCC! in left hand panel, click Connection - SSH - Auth
   for "Private key file for authentication," browse for where you saved the private key file above and select Open. 
   Then click "Open" again and click "yes" for the security alert, then enter the password that you set above. In PuTTY, the cursor will not move while you are entering your password.
-  You should now see the welcome screen to TSCC!
-  
+  You should now see the welcome screen to TSCC! 
   Once done, you can exit with the command: exit
-  Practice logging in and out a few times and get started doing research/analyzing your data!
+
+#How do I logout from my session?
+"logout"  
+  
+ Practice logging in and out a few times and get started doing research/analyzing your data!
   
   
   Step two: Setting up file transfers
@@ -124,5 +126,7 @@ You can check on how much storage you're using with: lfs quota -u <yourUsername>
 There are many software and compilers that are already maintained on TSCC and can be accessed without installing. The list can be found here: http://www.sdsc.edu/support/user_guides/tscc-quick-start.html Software was last updated Winter 2018.
 
 
+Want to get a suite of software to do things with the fast5/q files from ONT nanopore sequencing?
 
+conda create --name <what you want to name this environment> --clone /home/cbdinh/anaconda2/envs/ont
 
