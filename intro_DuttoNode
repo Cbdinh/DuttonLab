@@ -118,7 +118,23 @@ qsub -I -l nodes=#:ppn=# -l walltime=HH:MM:SS
 -I : interactive
 -l : options as above.
 
-I strongly advise using these interactive jobs with "screens," see this link.
+I strongly advise using these interactive jobs with "screens," see this link with A LOT of information (https://www.gnu.org/software/screen/manual/screen.html).
+But in short, once you start screen (with the command "screen"), you use control-a (^a) to send commands to screen, similar to using esc in vim.
+To get a printout of the help menu, type ?, then enter
+^a c : Creates a new window/screen with everything in the original window still running
+    Can also use "screen -s <desiredScreenName>" if you wanted to name it.
+    "^a : sessionname <desiredScreenName>" to rename existing session.
+^a n : switch to the Next window. Goes down the list.
+^a p : switch to the Previous window.
+^a d : Detaching currect window/screen. Will put you back at your shell/original window. These screens can be reattached later and are still running
+screen -r : Reattaching. Note that here, you do not type control-a/^a because you have detached from the screen/s before hand. If you have multiple screens open, you need to type "screen -r <nameOfScreen>"
+"exit" OR ^a k : Kills the screen when you don't need it anymore.
+
+more advanced:
+^a H : creates a running log screen that captures what you're doing so you can go back and check it later. Similar to the history command.
+^a M : creates an alert for when something is printed (in the standard output). This is helpful for when you're running something large.
+^a _ : creates an alert for when there is no activity (in the standard output). This is helpful if you're running/downloading something with lots of consistent output that stops when it's done.
+^a x : locks the screen, requiring a password to get back in.
 
 
 You can check on how much storage you're using with: lfs quota -u <yourUsername> /oasis/tscc/scratch
