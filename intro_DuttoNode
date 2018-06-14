@@ -146,3 +146,9 @@ Want to get a suite of software to do things with the fast5/q files from ONT nan
 
 conda create --name <what you want to name this environment> --clone /home/cbdinh/anaconda2/envs/ont
 
+Checking on your jobs submitted to TSCC:
+yqd : will tell you how many nodes are free. If your job is not starting, this probably is not that useful because it will just say "0 nodes free"
+lsjobs: tell you all the jobs running on all nodes. If you want to be a little nosey and see who is being a hog
+  Can specify with flag --property=gpu-hotel-node (or other properties)
+showstart <jobID> : will use "maui" to give you an estimate of when a particular job will begin. Because maui assumes that current jobs will use their full walltime, jobs generally start before the time
+showq -i : will show you where your job is in the waiting queue.
