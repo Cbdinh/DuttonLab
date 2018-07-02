@@ -9,7 +9,7 @@ Step 2: logging in
 #MAC users: In Applications/Utilities launch Terminal. "ssh <yourUsername>@tscc-login.sdsc.edu"
 #Linux users: In Applications/System Tools, launch Terminal. "ssh <yourUsername>@tscc-login.sdsc.edu"
 #Windows: If you use windowsOS, you will beed to download Putty (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) to connect to TSCC. After installation, start the program "PuTTYgen," which is found within the PuTTY folder in "All Programs" if installed in the default location.
-  Open PuTTY. In "HostName," enter <your username>@tscc.login.sdsc.edu
+  Open PuTTY. In "HostName," enter <your username>@tscc-login.sdsc.edu
   In "Saved Sessions," enter tscc
   Save
   Then connect to TSCC! in left hand panel, click Connection - SSH - Auth
